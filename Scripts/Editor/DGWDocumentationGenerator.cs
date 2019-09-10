@@ -158,7 +158,7 @@ namespace DoxygenGeneratorWindow
             this.minSize = new Vector2(300, 300);
             this.maxSize = new Vector2(500, 1024);
             // set title of window
-            Texture2D tImageIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(DGWFindPackage.PathOfPackage("/Editor/DGWIcon.psd"));
+            Texture2D tImageIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(DGWFindPackage.PathOfPackage("/Editor/Resources/Textures/DGWIcon.psd"));
             titleContent = new GUIContent("Doc", tImageIcon);
 
             //----------
@@ -498,7 +498,7 @@ EditorGUI.indentLevel --;
 
 #if UNITY_MENU_IDEMOBI
 #else
-			Texture2D tImageLogo = AssetDatabase.LoadAssetAtPath<Texture2D> (DGWFindPackage.PathOfPackage ("/Editor/IdemobiIconAlpha.png"));
+			Texture2D tImageLogo = AssetDatabase.LoadAssetAtPath<Texture2D> (DGWFindPackage.PathOfPackage ("/Scripts/Editor/Resources/Textures/IdemobiIconAlpha.png"));
 			GUILayout.Space (20.0F);
 			GUILayout.FlexibleSpace ();
 			GUILayout.BeginHorizontal ();
