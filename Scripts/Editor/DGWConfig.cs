@@ -36,6 +36,10 @@ namespace DoxygenGeneratorWindow
         /// </summary>
         public string ProjectName = "";
         /// <summary>
+        /// The logo for project.
+        /// </summary>
+        public string ProjectLogo = "";
+        /// <summary>
         /// The project synopsis.
         /// </summary>
         public string ProjectSynopsis = "";

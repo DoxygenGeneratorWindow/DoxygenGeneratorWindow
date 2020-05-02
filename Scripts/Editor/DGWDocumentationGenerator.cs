@@ -224,6 +224,22 @@ namespace DoxygenGeneratorWindow
                 Config.ProjectName = EditorGUILayout.TextField("Project Name", Config.ProjectName);
                 Config.ProjectSynopsis = EditorGUILayout.TextField("Project Synopsis", Config.ProjectSynopsis);
                 Config.ProjectVersion = EditorGUILayout.TextField("Project Version", Config.ProjectVersion);
+
+                Texture2D tTexture = (Texture2D)AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(Config.ProjectLogo);
+                tTexture = (Texture2D) EditorGUILayout.ObjectField("Project Logo", tTexture, typeof(Texture2D), false);
+                if (tTexture != null)
+                {
+                    string tTexturePath = AssetDatabase.GetAssetPath(tTexture);
+                    if (System.IO.File.Exists(tTexturePath) == true)
+                    {
+                        Config.ProjectLogo = tTexturePath;
+                    }
+                }
+                else
+                {
+                    Config.ProjectLogo = "";
+                }
+
                 Config.UseTools = (DGWTools)EditorGUILayout.EnumPopup("Use tool", Config.UseTools);
                 // indent remove
                 EditorGUI.indentLevel--;
@@ -241,7 +257,7 @@ namespace DoxygenGeneratorWindow
             // indent add
             EditorGUI.indentLevel++;
             UnityEngine.Object tFolderObject = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(Config.FolderName);
-            tFolderObject = EditorGUILayout.ObjectField("Folder sources assets", tFolderObject, typeof(UnityEngine.Object), false);
+            tFolderObject = EditorGUILayout.ObjectField("Folder sources", tFolderObject, typeof(UnityEngine.Object), false);
             if (tFolderObject != null)
             {
                 string tFolderPath = AssetDatabase.GetAssetPath(tFolderObject);
