@@ -1,24 +1,14 @@
 ﻿//=====================================================================================================================
 //
-// ideMobi copyright 2017 
+// ideMobi copyright 2020 
 // All rights reserved by ideMobi
 //
 //=====================================================================================================================
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Threading;
-using System.Text;
-using System.Text.RegularExpressions;
-
 using UnityEngine;
-
-#if UNITY_EDITOR
 using UnityEditor;
-using UnityEditor.SceneManagement;
 
 //=====================================================================================================================
 namespace DoxygenGeneratorWindow
@@ -31,14 +21,8 @@ namespace DoxygenGeneratorWindow
     public class DGWConfig
     {
         //-------------------------------------------------------------------------------------------------------------
-        /// <summary>
-        /// The path to Doxygen.app on OSX.
-        /// </summary>
-        public string PathToDOxygenOSX = "";
-        /// <summary>
-        /// The path to Doxygen.exe WIN.
-        /// </summary>
-        public string PathToDOxygenWIN = "";
+        public DGWTools UseTools = DGWTools.Doxygen;
+        //-------------------------------------------------------------------------------------------------------------
         /// <summary>
         /// The name of the folder to analyze.
         /// </summary>
@@ -93,8 +77,6 @@ namespace DoxygenGeneratorWindow
             ProjectName = PlayerSettings.productName;
             ProjectSynopsis = "Documentation for " + PlayerSettings.productName + " source code";
             ProjectVersion = PlayerSettings.bundleVersion;
-            PathToDOxygenOSX = "/Applications/Doxygen.app";
-            PathToDOxygenWIN = "C:/Program Files/doxygen/bin/doxygen.exe";
             Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + "/Documentation");
             FolderOutput = "/Documentation";
             FolderName = "Assets";
@@ -124,4 +106,3 @@ namespace DoxygenGeneratorWindow
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 }
 //=====================================================================================================================
-#endif
