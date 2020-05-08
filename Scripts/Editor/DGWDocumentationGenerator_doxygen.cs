@@ -146,6 +146,8 @@ namespace DoxygenGeneratorWindow
             EditorGUI.indentLevel++;
             EditorGUI.BeginDisabledGroup(!Config.GenerateHTML);
             Config.HTMLColor = EditorGUILayout.ColorField("Tint Color", Config.HTMLColor);
+            Config.GenerateDocSet = EditorGUILayout.Toggle("Generate DocSet", Config.GenerateDocSet);
+
             EditorGUI.EndDisabledGroup();
             EditorGUI.indentLevel--;
             Config.GenerateXML = EditorGUILayout.Toggle("Generate XML", Config.GenerateXML);
@@ -185,6 +187,7 @@ namespace DoxygenGeneratorWindow
             EditorGUILayout.LabelField("Analyze settings", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
             Config.Recursive = EditorGUILayout.Toggle("Recursive", Config.Recursive);
+            Config.ALPHABETICAL_INDEX = EditorGUILayout.Toggle("Alphabetic index", Config.ALPHABETICAL_INDEX);
             // indent remove
             EditorGUI.indentLevel--;
             // finish form output 
@@ -489,7 +492,7 @@ namespace DoxygenGeneratorWindow
                          "#---------------------------------------------------------------------------" + "\n" +
                          "# Configuration options related to the alphabetical class index" + "\n" +
                          "#---------------------------------------------------------------------------" + "\n" +
-                         "ALPHABETICAL_INDEX     = YES" + "\n" +
+                         "ALPHABETICAL_INDEX     = " + YesOrNo(Config.ALPHABETICAL_INDEX) + "\n" +
                          "COLS_IN_ALPHA_INDEX    = 5" + "\n" +
                          "IGNORE_PREFIX          = " + "\n" +
                          "#---------------------------------------------------------------------------" + "\n" +
@@ -509,11 +512,11 @@ namespace DoxygenGeneratorWindow
                          "HTML_TIMESTAMP         = NO" + "\n" +
                          "HTML_DYNAMIC_SECTIONS  = NO" + "\n" +
                          "HTML_INDEX_NUM_ENTRIES = 100" + "\n" +
-                         "GENERATE_DOCSET        = NO" + "\n" +
-                         "DOCSET_FEEDNAME        = \"Doxygen generated docs\"" + "\n" +
-                         "DOCSET_BUNDLE_ID       = org.doxygen.Project" + "\n" +
-                         "DOCSET_PUBLISHER_ID    = org.doxygen.Publisher" + "\n" +
-                         "DOCSET_PUBLISHER_NAME  = Publisher" + "\n" +
+                         "GENERATE_DOCSET        = " + YesOrNo(Config.GenerateDocSet) + "\n" +
+                         "DOCSET_FEEDNAME        = \"" + Config.ProjectName + " generated docs\"" + "\n" +
+                         "DOCSET_BUNDLE_ID       = org." + Config.ProjectName.ToLower() + ".Project" + "\n" +
+                         "DOCSET_PUBLISHER_ID    = org." + Config.ProjectName.ToLower() + ".Publisher" + "\n" +
+                         "DOCSET_PUBLISHER_NAME  = " + Config.ProjectName + "" + "\n" +
                          "GENERATE_HTMLHELP      = NO" + "\n" +
                          "CHM_FILE               = " + "\n" +
                          "HHC_LOCATION           = " + "\n" +
@@ -523,14 +526,14 @@ namespace DoxygenGeneratorWindow
                          "TOC_EXPAND             = NO" + "\n" +
                          "GENERATE_QHP           = NO" + "\n" +
                          "QCH_FILE               = " + "\n" +
-                         "QHP_NAMESPACE          = org.doxygen.Project" + "\n" +
+                         "QHP_NAMESPACE          = org." + Config.ProjectName.ToLower() + ".Project" + "\n" +
                          "QHP_VIRTUAL_FOLDER     = doc" + "\n" +
                          "QHP_CUST_FILTER_NAME   = " + "\n" +
                          "QHP_CUST_FILTER_ATTRS  = " + "\n" +
                          "QHP_SECT_FILTER_ATTRS  = " + "\n" +
                          "QHG_LOCATION           = " + "\n" +
                          "GENERATE_ECLIPSEHELP   = NO" + "\n" +
-                         "ECLIPSE_DOC_ID         = org.doxygen.Project" + "\n" +
+                         "ECLIPSE_DOC_ID         = org." + Config.ProjectName.ToLower() + ".Project" + "\n" +
                          "DISABLE_INDEX          = NO" + "\n" +
                          "GENERATE_TREEVIEW      = NO" + "\n" +
                          "ENUM_VALUES_PER_LINE   = 4" + "\n" +
@@ -711,23 +714,22 @@ namespace DoxygenGeneratorWindow
             }
         }
         //-------------------------------------------------------------------------------------------------------------
-        public static Texture2D DeCompress(Texture2D source)
+        /// <summary>
+        /// decompress texture in new texture to save in png file
+        /// </summary>
+        /// <param name="sSource"></param>
+        /// <returns></returns>
+        public static Texture2D DeCompress(Texture2D sSource)
         {
-            RenderTexture renderTex = RenderTexture.GetTemporary(
-                        source.width,
-                        source.height,
-                        0,
-                        RenderTextureFormat.Default,
-                        RenderTextureReadWrite.Linear);
-
-            Graphics.Blit(source, renderTex);
+            RenderTexture tRenderTexture = RenderTexture.GetTemporary(sSource.width,sSource.height,0,RenderTextureFormat.Default,RenderTextureReadWrite.Linear);
+            Graphics.Blit(sSource, tRenderTexture);
             RenderTexture previous = RenderTexture.active;
-            RenderTexture.active = renderTex;
-            Texture2D readableText = new Texture2D(source.width, source.height);
-            readableText.ReadPixels(new Rect(0, 0, renderTex.width, renderTex.height), 0, 0);
+            RenderTexture.active = tRenderTexture;
+            Texture2D readableText = new Texture2D(sSource.width, sSource.height);
+            readableText.ReadPixels(new Rect(0, 0, tRenderTexture.width, tRenderTexture.height), 0, 0);
             readableText.Apply();
             RenderTexture.active = previous;
-            RenderTexture.ReleaseTemporary(renderTex);
+            RenderTexture.ReleaseTemporary(tRenderTexture);
             return readableText;
         }
         //-------------------------------------------------------------------------------------------------------------

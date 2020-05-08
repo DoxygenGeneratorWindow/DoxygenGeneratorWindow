@@ -52,9 +52,17 @@ namespace DoxygenGeneratorWindow
         /// </summary>
         public bool Recursive = true;
         /// <summary>
+        /// Is analyze is ALPHABETICAL_INDEX or not?.
+        /// </summary>
+        public bool ALPHABETICAL_INDEX = true;
+        /// <summary>
         /// The generate HTML Doc.
         /// </summary>
         public bool GenerateHTML = true;
+        /// <summary>
+        /// The generate Doc set.
+        /// </summary>
+        public bool GenerateDocSet = false;
         /// <summary>
         /// The tint color of the HTML doc.
         /// </summary>
