@@ -240,7 +240,6 @@ namespace DoxygenGeneratorWindow
         /// <summary>
         /// Run doxygen!
         /// </summary>
-        [System.Obsolete]
         void RunDoxygen()
         {
             //			UnityEngine.Debug.Log ("DGWDocumentationGenerator RunDoxygen()");
