@@ -40,7 +40,24 @@ git submodule add --force git@github.com:idemobi/DoxygenGeneratorWindow.git
 ### Launch your project 
 
 - select Doxygen Generator Window in menu 
+
+![IMG](https://github.com/idemobi/DoxygenGeneratorWindow/raw/release/.README/screen_0.png)
+
+- select path of Doxygen (you just downloaded it...)
+- select path of Folder sources (your source code...)
+- select destination path
+![IMG](https://github.com/idemobi/DoxygenGeneratorWindow/raw/release/.README/screen_1.png)
+
 - fill the form 
+- select your options
+![IMG](https://github.com/idemobi/DoxygenGeneratorWindow/raw/release/.README/screen_2.png)
+
+- click on "Generate"
+- enjoy your documentation
+![IMG](https://github.com/idemobi/DoxygenGeneratorWindow/raw/release/.README/screen_3.png)
+
+![IMG](https://github.com/idemobi/DoxygenGeneratorWindow/raw/release/.README/screen_4.png)
+
 - generate your code 
 
 ## Thanks
