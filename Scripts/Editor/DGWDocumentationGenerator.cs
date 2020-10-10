@@ -134,6 +134,7 @@ namespace DoxygenGeneratorWindow
                     }
                     else
                     {
+                        ConfigList = new DGWConfigList();
                         Config = ConfigList.AddNewConfig();
                     }
                 }
@@ -145,6 +146,7 @@ namespace DoxygenGeneratorWindow
             }
             else
             {
+                ConfigList = new DGWConfigList();
                 Config = ConfigList.AddNewConfig();
             }
         }
@@ -178,8 +180,7 @@ namespace DoxygenGeneratorWindow
             this.minSize = new Vector2(300, 300);
             this.maxSize = new Vector2(2048, 2048);
             // set title of window
-            Texture2D tImageIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(DGWFindPackage.PathOfPackage("/Editor/Resources/Textures/DGWIcon.psd"));
-            titleContent = new GUIContent("Doc", tImageIcon);
+            titleContent = new GUIContent("DoxyGW");
 
             //----------
             //SCROLL ZONE START
@@ -388,7 +389,7 @@ namespace DoxygenGeneratorWindow
 
 #if UNITY_MENU_IDEMOBI
 #else
-            Texture2D tImageLogo = AssetDatabase.LoadAssetAtPath<Texture2D>(DGWFindPackage.PathOfPackage("/Scripts/Editor/Resources/Textures/IdemobiIconAlpha.png"));
+            Texture2D tImageLogo = AssetDatabase.LoadAssetAtPath<Texture2D>(DGWFindPackage.PathOfPackage("/Scripts/Editor/Idemobi.png"));
             GUILayout.Space(20.0F);
             GUILayout.FlexibleSpace();
             GUILayout.BeginHorizontal();
@@ -398,21 +399,25 @@ namespace DoxygenGeneratorWindow
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             GUILayout.Label(new GUIContent("idéMobi ©"), tStyleBold);
-            GUILayout.Label(new GUIContent("Copyright 2017"), tStyleBold);
+            //GUILayout.Label(new GUIContent("Copyright 2020"), tStyleBold);
             tStyle.alignment = TextAnchor.MiddleCenter;
-            GUILayout.Label(new GUIContent("idéMobi is a french society. All rights based on french law."), tStyle);
+
+            if (GUILayout.Button("Go to GitHub repository"))
+            {
+                Application.OpenURL("https://github.com/idemobi/DoxygenGeneratorWindow");
+            }
 #endif
             GUILayout.Space(20.0F);
-            GUILayout.Label(new GUIContent("Thanks to Doxygen ©!"), tStyleBold);
-            GUILayout.Label(new GUIContent("Copyright 1997-2016 by Dimitri van Heesch."), tStyleBold);
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            if (GUILayout.Button("Go to Doxygen© website !"))
+            GUILayout.Label(new GUIContent("Thanks to Doxygen©!"), tStyleBold);
+            GUILayout.Label(new GUIContent("Copyright 1997-2018 by Dimitri van Heesch."), tStyleBold);
+            //GUILayout.BeginHorizontal();
+            //GUILayout.FlexibleSpace();
+            if (GUILayout.Button(K_TEXTL_DOXYGEN))
             {
                 Application.OpenURL(K_URL_DOXYGEN);
             }
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
+            //GUILayout.FlexibleSpace();
+            //GUILayout.EndHorizontal();
             GUILayout.Space(20.0F);
             //----------
 

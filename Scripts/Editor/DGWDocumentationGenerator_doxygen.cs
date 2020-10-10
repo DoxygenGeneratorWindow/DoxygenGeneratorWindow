@@ -27,7 +27,9 @@ namespace DoxygenGeneratorWindow
         /// <summary>
         /// The DOXYGEN URL.
         /// </summary>
-        const string K_URL_DOXYGEN = "http://www.stack.nl/~dimitri/doxygen/download.html";
+        //const string K_URL_DOXYGEN = "http://www.stack.nl/~dimitri/doxygen/download.html";
+        const string K_URL_DOXYGEN = "https://www.doxygen.nl/download.html";
+        const string K_TEXTL_DOXYGEN = "Go to Doxygen© website";
         //-------------------------------------------------------------------------------------------------------------
         void OnGUI_Doxygen()
         {
@@ -110,7 +112,7 @@ namespace DoxygenGeneratorWindow
                 {
                     Application.OpenURL(K_URL_DOXYGEN);
                 }
-                if (GUILayout.Button("Go to website !"))
+                if (GUILayout.Button(K_TEXTL_DOXYGEN))
                 {
                     Application.OpenURL(K_URL_DOXYGEN);
                 }
@@ -121,7 +123,7 @@ namespace DoxygenGeneratorWindow
 			{
 				Application.OpenURL(K_URL_DOXYGEN);
 			}
-			if (GUILayout.Button("Go to website !"))
+			if (GUILayout.Button(K_TEXTL_DOXYGEN))
 			{
 				Application.OpenURL(K_URL_DOXYGEN);
 			}
