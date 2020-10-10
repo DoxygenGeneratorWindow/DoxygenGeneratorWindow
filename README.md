@@ -1,18 +1,14 @@
 # Doxygen Generator Window
 
--
-
 ![IDE](https://img.shields.io/badge/unity-osx-green.svg?logo=unity)
 ![IDE](https://img.shields.io/badge/unity-win-green.svg?logo=unity)
 ![EXT](https://img.shields.io/badge/Doxygen-osx-green.svg?logo=doxygen)
 ![EXT](https://img.shields.io/badge/Doxygen-win-green.svg?logo=doxygen)
 
-
 ![Language Status](https://img.shields.io/badge/language-C%23-blue.svg?logo=C-sharp)
 ![IDE](https://img.shields.io/badge/visual--studio-badge-blue.svg?logo=visual-studio)
 ![VCS](https://img.shields.io/badge/git-github-blue.svg?logo=git)
 
--
 
 ## An extension to integrate Doxygen© in Unity© Projects.
 
@@ -44,7 +40,24 @@ git submodule add --force git@github.com:idemobi/DoxygenGeneratorWindow.git
 ### Launch your project 
 
 - select Doxygen Generator Window in menu 
+
+![IMG](https://github.com/idemobi/DoxygenGeneratorWindow/raw/release/.README/screen_0.png)
+
+- select path of Doxygen (you just downloaded it...)
+- select path of Folder sources (your source code...)
+- select destination path
+![IMG](https://github.com/idemobi/DoxygenGeneratorWindow/raw/release/.README/screen_1.png)
+
 - fill the form 
+- select your options
+![IMG](https://github.com/idemobi/DoxygenGeneratorWindow/raw/release/.README/screen_2.png)
+
+- click on "Generate"
+- enjoy your documentation
+![IMG](https://github.com/idemobi/DoxygenGeneratorWindow/raw/release/.README/screen_3.png)
+
+![IMG](https://github.com/idemobi/DoxygenGeneratorWindow/raw/release/.README/screen_4.png)
+
 - generate your code 
 
 ## Thanks
