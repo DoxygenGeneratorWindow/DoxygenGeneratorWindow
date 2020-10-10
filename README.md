@@ -1,6 +1,6 @@
 # Doxygen Generator Window
 
--
+---
 
 ![IDE](https://img.shields.io/badge/unity-osx-green.svg?logo=unity)
 ![IDE](https://img.shields.io/badge/unity-win-green.svg?logo=unity)
@@ -12,7 +12,7 @@
 ![IDE](https://img.shields.io/badge/visual--studio-badge-blue.svg?logo=visual-studio)
 ![VCS](https://img.shields.io/badge/git-github-blue.svg?logo=git)
 
--
+---
 
 ## An extension to integrate Doxygen© in Unity© Projects.
 
