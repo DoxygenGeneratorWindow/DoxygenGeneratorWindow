@@ -36,14 +36,19 @@ namespace DoxygenGeneratorWindow
             //----------
             // exe box
             //----------
-            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-
-            FileInfo tExePath = null;
+            GUILayout.Space(k_Marge);
 #if UNITY_EDITOR_OSX
             // form to .app 
-            // title
-            GUILayout.Label("Path to Doxygen.app © application", EditorStyles.boldLabel);
-            // indent add
+            EditorGUILayout.LabelField("Path to Doxygen.app © application", EditorStyles.boldLabel);
+#else
+            // form to .exe 
+            GUILayout.Label("Path to Doxygen.exe © application", EditorStyles.boldLabel);
+#endif
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            EditorGUI.indentLevel++;
+            FileInfo tExePath = null;
+#if UNITY_EDITOR_OSX
+            EditorGUILayout.LabelField("Path to Doxygen", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
             // select Doxygen.app
             EditorGUILayout.BeginHorizontal();
@@ -63,13 +68,9 @@ namespace DoxygenGeneratorWindow
             EditorGUI.indentLevel--;
             // finsih form to .app
 #else
-
-            // form to .exe 
-            // title
-            GUILayout.Label("Path to Doxygen.exe © application", EditorStyles.boldLabel);
-            // indent add
+            EditorGUILayout.LabelField("Path to Doxygen", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
-            // select Doxygen.app
+            // select Doxygen.exe
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Path to Doxygen.exe", EditorPrefs.GetString(K_PathToDOxygenWIN_key, "C:/Program Files/doxygen/bin/doxygen.exe"));
             if (GUILayout.Button("...", EditorStyles.miniButtonRight, GUILayout.Width(tPathButtonWidth)))
@@ -88,9 +89,9 @@ namespace DoxygenGeneratorWindow
             }
             // indent remove
             EditorGUI.indentLevel--;
-            // finsih form to .app
+            // finsih form to .exe
 #endif
-            // If no exe disable
+            // If no app/exe
             bool tExePathIsValid = true;
             if (tExePath == null)
             {
@@ -100,14 +101,11 @@ namespace DoxygenGeneratorWindow
             {
                 tExePathIsValid = false;
             }
-
-
             if (tExePathIsValid == false)
             {
 #if UNITY_EDITOR_OSX
                 EditorGUILayout.HelpBox("Download MacOSX© version at " + K_URL_DOXYGEN + "!", MessageType.Warning);
                 Rect tLabelRect = GUILayoutUtility.GetLastRect();
-
                 if (Event.current.type == EventType.MouseUp && tLabelRect.Contains(Event.current.mousePosition))
                 {
                     Application.OpenURL(K_URL_DOXYGEN);
@@ -117,31 +115,23 @@ namespace DoxygenGeneratorWindow
                     Application.OpenURL(K_URL_DOXYGEN);
                 }
 #else
-			EditorGUILayout.HelpBox("Download Windows© version at " + K_URL_DOXYGEN + "!", MessageType.Warning);
-			Rect tLabelRect = GUILayoutUtility.GetLastRect();
-			if (Event.current.type == EventType.MouseUp && tLabelRect.Contains(Event.current.mousePosition))
-			{
-				Application.OpenURL(K_URL_DOXYGEN);
-			}
-			if (GUILayout.Button(K_TEXTL_DOXYGEN))
-			{
-				Application.OpenURL(K_URL_DOXYGEN);
-			}
-
+			    EditorGUILayout.HelpBox("Download Windows© version at " + K_URL_DOXYGEN + "!", MessageType.Warning);
+			    Rect tLabelRect = GUILayoutUtility.GetLastRect();
+			    if (Event.current.type == EventType.MouseUp && tLabelRect.Contains(Event.current.mousePosition))
+			    {
+				    Application.OpenURL(K_URL_DOXYGEN);
+			    }
+			    if (GUILayout.Button(K_TEXTL_DOXYGEN))
+			    {
+				    Application.OpenURL(K_URL_DOXYGEN);
+			    }
 #endif
             }
-            GUILayout.EndVertical();
             //----------
-
             EditorGUI.BeginDisabledGroup(!tExePathIsValid);
-
-
-
-
             //----------
             // Output box
             //----------
-            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             EditorGUILayout.LabelField("Output settings", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
             Config.GenerateHTML = EditorGUILayout.Toggle("Generate HTML", Config.GenerateHTML);
@@ -149,7 +139,6 @@ namespace DoxygenGeneratorWindow
             EditorGUI.BeginDisabledGroup(!Config.GenerateHTML);
             Config.HTMLColor = EditorGUILayout.ColorField("Tint Color", Config.HTMLColor);
             Config.GenerateDocSet = EditorGUILayout.Toggle("Generate DocSet", Config.GenerateDocSet);
-
             EditorGUI.EndDisabledGroup();
             EditorGUI.indentLevel--;
             Config.GenerateXML = EditorGUILayout.Toggle("Generate XML", Config.GenerateXML);
@@ -167,7 +156,6 @@ namespace DoxygenGeneratorWindow
             EditorGUI.BeginDisabledGroup(!Config.GenerateLatex);
             EditorGUI.EndDisabledGroup();
             EditorGUI.indentLevel--;
-
             if (OutIsOk == true)
             {
                 if (Config.GenerateHTML == false && Config.GenerateLatex == false && Config.GenerateXML == false && Config.GenerateRTF == false)
@@ -175,56 +163,36 @@ namespace DoxygenGeneratorWindow
                     OutIsOk = false;
                 }
             }
-            // indent remove
             EditorGUI.indentLevel--;
-            // finish form output 
-            GUILayout.EndVertical();
-            //----------
-
             //----------
             // Analyze box
             //----------
-            // form analyze
-            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             EditorGUILayout.LabelField("Analyze settings", EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
             Config.Recursive = EditorGUILayout.Toggle("Recursive", Config.Recursive);
             Config.ALPHABETICAL_INDEX = EditorGUILayout.Toggle("Alphabetic index", Config.ALPHABETICAL_INDEX);
             // indent remove
             EditorGUI.indentLevel--;
+            EditorGUI.indentLevel--;
             // finish form output 
             GUILayout.EndVertical();
             //----------
-
-            //----------
-            // save box
-            //----------
-            //			EditorGUILayout.BeginVertical (EditorStyles.helpBox);
-            //			EditorGUILayout.LabelField ("Save configurations", EditorStyles.boldLabel);
-            //			if (GUILayout.Button ("Save")) {
-            //				SavePreferences ();
-            //			}
-            //			GUILayout.EndVertical ();
-            //----------
-
+            EditorGUI.EndDisabledGroup();
+            EditorGUI.EndDisabledGroup();
             //----------
             // Analyze box
             //----------
-            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-            EditorGUI.BeginDisabledGroup(!OutIsOk);
+            GUILayout.Space(k_Marge);
             EditorGUILayout.LabelField("Generate documentation", EditorStyles.boldLabel);
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+            EditorGUI.BeginDisabledGroup(!OutIsOk || !tExePathIsValid);
             if (GUILayout.Button("Generate"))
             {
                 RunDoxygen();
             }
             EditorGUI.EndDisabledGroup();
             GUILayout.EndVertical();
-
             //----------
-
-            EditorGUI.EndDisabledGroup();
-            EditorGUI.EndDisabledGroup();
-
         }
         //-------------------------------------------------------------------------------------------------------------
         /// <summary>
