@@ -42,24 +42,23 @@ git submodule add --force git@github.com:DoxygenGeneratorWindow/DoxygenGenerator
 
 - select Doxygen Generator Window in menu 
 
-![IMG](https://github.com/DoxygenGeneratorWindow/DoxygenGeneratorWindow/raw/release/.README/screen_0.png)
+<img src="https://github.com/DoxygenGeneratorWindow/DoxygenGeneratorWindow_Project/raw/release/.README/screen_0.png" width="200px"/>
 
-- select path of Doxygen (you just downloaded it...)
-- select path of Folder sources (your source code...)
-- select destination path
-![IMG](https://github.com/DoxygenGeneratorWindow/DoxygenGeneratorWindow/raw/release/.README/screen_1.png)
+- Doxygen Generator Window appear
 
-- fill the form 
-- select your options
-![IMG](https://github.com/DoxygenGeneratorWindow/DoxygenGeneratorWindow/raw/release/.README/screen_2.png)
+<img src="https://github.com/DoxygenGeneratorWindow/DoxygenGeneratorWindow_Project/raw/release/.README/screen_1.png" width="100%"/>
 
+- you can create a lot of configurations, for each module of your project
+
+<img src="https://github.com/DoxygenGeneratorWindow/DoxygenGeneratorWindow_Project/raw/release/.README/screen_2.png" width="200px"/>
+
+- fill the form and select your options
 - click on "Generate"
 - enjoy your documentation
-![IMG](https://github.com/DoxygenGeneratorWindow/DoxygenGeneratorWindow/raw/release/.README/screen_3.png)
 
-![IMG](https://github.com/DoxygenGeneratorWindow/DoxygenGeneratorWindow/raw/release/.README/screen_4.png)
+<img src="https://github.com/DoxygenGeneratorWindow/DoxygenGeneratorWindow_Project/raw/release/.README/screen_3.png" width="200px"/>
 
-- generate your code 
+<img src="https://github.com/DoxygenGeneratorWindow/DoxygenGeneratorWindow_Project/raw/release/.README/screen_4.png" width="200px"/>
 
 ## Thanks
 | | | 
