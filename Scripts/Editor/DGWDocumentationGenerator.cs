@@ -6,7 +6,6 @@
 //=====================================================================================================================
 
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using UnityEngine;
 using UnityEditor;
@@ -39,6 +38,7 @@ namespace DoxygenGeneratorWindow
     {
         //-------------------------------------------------------------------------------------------------------------
         const float k_PathButtonWidth = 20.0F;
+        const float k_Marge = 5.0F;
         //-------------------------------------------------------------------------------------------------------------
         /// <summary>
         /// The shared instance.
@@ -69,6 +69,14 @@ namespace DoxygenGeneratorWindow
         /// Check if generation can be execute
         /// </summary>
         private bool OutIsOk = true;
+        /// <summary>
+        /// Idemobi Logo content
+        /// </summary>
+        GUIContent IdemobiContent;
+        /// <summary>
+        /// Doxygen Generator Window Logo
+        /// </summary>
+        GUIContent DGWContent;
         //-------------------------------------------------------------------------------------------------------------
         /// <summary>
         /// Ascencor to shared instance.
@@ -76,7 +84,6 @@ namespace DoxygenGeneratorWindow
         /// <returns>The shared instance.</returns>
         public static DGWDocumentationGenerator SharedInstance()
         {
-            //			UnityEngine.Debug.Log ("STATIC DGWDocumentationGenerator SharedInstance()");
             if (kSharedInstance == null)
             {
                 kSharedInstance = EditorWindow.GetWindow(typeof(DGWDocumentationGenerator)) as DGWDocumentationGenerator;
@@ -92,7 +99,6 @@ namespace DoxygenGeneratorWindow
         /// </summary>
         static void PrepareWindow()
         {
-            //			UnityEngine.Debug.Log ("STATIC DGWDocumentationGenerator PrepareWindow()");
             SharedInstance().ShowUtility();
             SharedInstance().Focus();
         }
@@ -102,8 +108,15 @@ namespace DoxygenGeneratorWindow
         /// </summary>
         public void OnEnable()
         {
-            //			UnityEngine.Debug.Log ("DGWDocumentationGenerator OnEnable()");
             LoadPreferences();
+            Texture2D tImageLogo = AssetDatabase.LoadAssetAtPath<Texture2D>(DGWFindPackage.PathOfPackage("/Scripts/Editor/Idemobi.png"));
+            IdemobiContent = new GUIContent(tImageLogo);
+            Texture2D tImageLogoDGW = AssetDatabase.LoadAssetAtPath<Texture2D>(DGWFindPackage.PathOfPackage("/Scripts/Editor/DoxygenGeneratorWindow_Icon.png"));
+            DGWContent = new GUIContent(tImageLogoDGW);
+            titleContent = new GUIContent("DoxyGW", tImageLogoDGW);
+            // set size of window
+            this.minSize = new Vector2(300, 300);
+            this.maxSize = new Vector2(2048, 2048);
         }
         //-------------------------------------------------------------------------------------------------------------
         /// <summary>
@@ -120,7 +133,6 @@ namespace DoxygenGeneratorWindow
         /// </summary>
         void LoadPreferences()
         {
-            //Debug.Log ("LoadPreferences");
             string tPath = PathConfig();
             if (File.Exists(tPath))
             {
@@ -158,7 +170,6 @@ namespace DoxygenGeneratorWindow
         /// <param name="sValue">If set to <c>true</c> value.</param>
         public string YesOrNo(bool sValue)
         {
-            //			UnityEngine.Debug.Log ("DGWDocumentationGenerator YesOrNo()");
             if (sValue == true)
             {
                 return "YES";
@@ -174,16 +185,9 @@ namespace DoxygenGeneratorWindow
         /// </summary>
         void OnGUI()
         {
-            // UnityEngine.Debug.Log ("DGWDocumentationGenerator OnGUI()");
             EditorGUI.BeginChangeCheck();
-            // set size of window
-            this.minSize = new Vector2(300, 300);
-            this.maxSize = new Vector2(2048, 2048);
-            // set title of window
-            titleContent = new GUIContent("DoxyGW");
-
             //----------
-            //SCROLL ZONE START
+            // SCROLL ZONE START
             //----------
             ScrollPosition = EditorGUILayout.BeginScrollView(ScrollPosition);
             if (WorkInProgress)
@@ -191,43 +195,46 @@ namespace DoxygenGeneratorWindow
                 EditorGUILayout.HelpBox("Work in progress!", MessageType.Info);
             }
             //----------
-
-
+            // Choose box
             //----------
-            // Config selector
-            //----------
-
-            EditorGUILayout.BeginVertical();
+            GUILayout.Space(k_Marge);
+            GUILayout.Label("Choose your configuration", EditorStyles.boldLabel);
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             EditorGUILayout.BeginHorizontal();
             List<string> tToolBarList = new List<string>();
+            List<string> tConfigNameList = new List<string>();
+            int tN = 0;
             foreach (DGWConfig tConfig in ConfigList.ConfigList)
             {
-                tToolBarList.Add(tConfig.ProjectName);
+                tN++;
+                tToolBarList.Add(tN.ToString() + " - " + tConfig.ProjectName);
+                tConfigNameList.Add(tConfig.ProjectName);
             }
-            ConfigList.Selected = GUILayout.Toolbar(ConfigList.Selected, tToolBarList.ToArray());
+            ConfigList.Selected = EditorGUILayout.Popup(ConfigList.Selected, tToolBarList.ToArray());
             Config = ConfigList.ConfigList[ConfigList.Selected];
             if (GUILayout.Button("Add", GUILayout.Width(80)))
             {
                 Config = ConfigList.AddNewConfig();
+                tToolBarList.Add(tN.ToString() + " - " + Config.ProjectName);
+                tConfigNameList.Add(Config.ProjectName);
             }
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
-
             //----------
-            // Project box
+            // Edit box
             //----------
+            GUILayout.Space(k_Marge);
+            GUILayout.Label("Edit \"" + tConfigNameList[ConfigList.Selected]+"\"", EditorStyles.boldLabel);
+            EditorGUI.indentLevel++;
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
             {
-                // form project
                 EditorGUILayout.LabelField("Project settings", EditorStyles.boldLabel);
-                // indent add
                 EditorGUI.indentLevel++;
                 Config.ProjectName = EditorGUILayout.TextField("Project Name", Config.ProjectName);
                 Config.ProjectSynopsis = EditorGUILayout.TextField("Project Synopsis", Config.ProjectSynopsis);
                 Config.ProjectVersion = EditorGUILayout.TextField("Project Version", Config.ProjectVersion);
-
-                Texture2D tTexture = (Texture2D)AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(Config.ProjectLogo);
-                tTexture = (Texture2D) EditorGUILayout.ObjectField("Project Logo", tTexture, typeof(Texture2D), false);
+                Texture2D tTexture = (Texture2D)AssetDatabase.LoadAssetAtPath<Object>(Config.ProjectLogo);
+                tTexture = (Texture2D)EditorGUILayout.ObjectField("Project Logo", tTexture, typeof(Texture2D), false);
                 if (tTexture != null)
                 {
                     string tTexturePath = AssetDatabase.GetAssetPath(tTexture);
@@ -242,27 +249,16 @@ namespace DoxygenGeneratorWindow
                 }
 
                 Config.UseTools = (DGWTools)EditorGUILayout.EnumPopup("Use tool", Config.UseTools);
-                // indent remove
                 EditorGUI.indentLevel--;
-                // finish form project
             }
-            GUILayout.EndVertical();
-            //----------
-
-            //----------
-            // InPut box
-            //----------
-            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-            // form source code
             EditorGUILayout.LabelField("Input", EditorStyles.boldLabel);
-            // indent add
             EditorGUI.indentLevel++;
-            UnityEngine.Object tFolderObject = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(Config.FolderName);
+            Object tFolderObject = AssetDatabase.LoadAssetAtPath<Object>(Config.FolderName);
             tFolderObject = EditorGUILayout.ObjectField("Folder sources", tFolderObject, typeof(UnityEngine.Object), false);
             if (tFolderObject != null)
             {
                 string tFolderPath = AssetDatabase.GetAssetPath(tFolderObject);
-                if (System.IO.Directory.Exists(tFolderPath) == true)
+                if (Directory.Exists(tFolderPath) == true)
                 {
                     Config.FolderName = tFolderPath;
                 }
@@ -272,19 +268,8 @@ namespace DoxygenGeneratorWindow
                 Config.FolderName = "";
                 EditorGUILayout.HelpBox("Drag and drop folder from your project!", MessageType.Warning);
             }
-            // indent remove
             EditorGUI.indentLevel--;
-            // finish form source code 
-            GUILayout.EndVertical();
-            //----------
-
-            //----------
-            // Outut  box
-            //----------
-            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-            // form ouput
             EditorGUILayout.LabelField("Output", EditorStyles.boldLabel);
-            // indent add
             EditorGUI.indentLevel++;
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Folder output path", Config.FolderOutput);
@@ -292,8 +277,6 @@ namespace DoxygenGeneratorWindow
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(Application.dataPath) + "/Documentation");
                 string tFolderOutput = EditorUtility.OpenFolderPanel("Where do you want generate documentation?", Path.GetDirectoryName(Application.dataPath) + "/Documentation", "");
-                //UnityEngine.Debug.Log ("tFolderOutput = " + tFolderOutput);
-                //UnityEngine.Debug.Log ("Application.dataPath = " + Application.dataPath);
                 Config.SetFolderOutputAbsolute(tFolderOutput);
             }
             EditorGUILayout.EndHorizontal();
@@ -311,14 +294,37 @@ namespace DoxygenGeneratorWindow
             {
                 EditorGUILayout.HelpBox("Select output folder", MessageType.Warning);
             }
-
-
+            EditorGUI.indentLevel--;
+            EditorGUILayout.LabelField("Delete action", EditorStyles.boldLabel);
+            kGroupResetState = EditorGUILayout.Foldout(kGroupResetState, "Show reset action");
+            if (kGroupResetState == true)
+            {
+                Color tBackgroundColor = GUI.backgroundColor;
+                GUI.backgroundColor = new Color(1.0F, 0.7F, 0.7F, 1.0F);
+                if (GUILayout.Button("Reset"))
+                {
+                    if (EditorUtility.DisplayDialog("Alert", "You will reset this configuration", "Reset", "Cancel"))
+                    {
+                        Config.EmptyFill();
+                        SavePreferences();
+                        GUI.FocusControl(null);
+                    }
+                }
+                if (GUILayout.Button("Delete"))
+                {
+                    if (EditorUtility.DisplayDialog("Alert", "You will delete this configuration", "Delete", "Cancel"))
+                    {
+                        Config = ConfigList.RemoveConfig(Config);
+                        SavePreferences();
+                        GUI.FocusControl(null);
+                    }
+                }
+                GUI.backgroundColor = tBackgroundColor;
+            }
             EditorGUI.indentLevel--;
             GUILayout.EndVertical();
             //----------
-
-            //----------
-            // Tool function
+            // Tool box
             //----------
             switch (Config.UseTools)
             {
@@ -336,38 +342,9 @@ namespace DoxygenGeneratorWindow
                     break;
             }
             //----------
-
+            // Thanks box
             //----------
-            // Reset box
-            //----------
-            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-
-            kGroupResetState = EditorGUILayout.Foldout(kGroupResetState, "Reset configurations");
-            //EditorGUILayout.LabelField ("Reset configurations", EditorStyles.boldLabel);
-            if (kGroupResetState == true)
-            {
-                Color tBackgroundColor = GUI.backgroundColor;
-                GUI.backgroundColor = new Color(1.0F, 0.7F, 0.7F, 1.0F);
-                if (GUILayout.Button("Reset"))
-                {
-                    Config.EmptyFill();
-                    SavePreferences();
-                }
-                if (GUILayout.Button("Remove"))
-                {
-                    Config = ConfigList.RemoveConfig(Config);
-                    SavePreferences();
-                }
-                GUI.backgroundColor = tBackgroundColor;
-            }
-
-            GUILayout.EndVertical();
             GUILayout.Space(10.0F);
-            //----------
-
-            //----------
-            // idemobi box
-            //----------
             GUIStyle tStyle = new GUIStyle(GUI.skin.label);
             tStyle.richText = true;
             tStyle.wordWrap = true;
@@ -386,47 +363,35 @@ namespace DoxygenGeneratorWindow
             GUIStyle tStyleImage = new GUIStyle(GUI.skin.label);
             tStyleImage.imagePosition = ImagePosition.ImageOnly;
             tStyleImage.alignment = TextAnchor.MiddleCenter;
-
-#if UNITY_MENU_IDEMOBI
-#else
-            Texture2D tImageLogo = AssetDatabase.LoadAssetAtPath<Texture2D>(DGWFindPackage.PathOfPackage("/Scripts/Editor/Idemobi.png"));
             GUILayout.Space(20.0F);
             GUILayout.FlexibleSpace();
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            GUIContent tContent = new GUIContent(tImageLogo);
-            GUILayout.Label(tContent, tStyleImage, GUILayout.Height(64.0F), GUILayout.Width(64.0F));
+            GUILayout.Label(DGWContent, tStyleImage, GUILayout.Height(64.0F), GUILayout.Width(64.0F));
+            GUILayout.Label(IdemobiContent, tStyleImage, GUILayout.Height(64.0F), GUILayout.Width(64.0F));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
-            GUILayout.Label(new GUIContent("idéMobi ©"), tStyleBold);
-            //GUILayout.Label(new GUIContent("Copyright 2020"), tStyleBold);
+            GUILayout.Label(new GUIContent("DoxygenGenratorWindow© by idéMobi©"), tStyleBold);
             tStyle.alignment = TextAnchor.MiddleCenter;
-
             if (GUILayout.Button("Go to GitHub repository"))
             {
                 Application.OpenURL("https://github.com/idemobi/DoxygenGeneratorWindow");
             }
-#endif
             GUILayout.Space(20.0F);
             GUILayout.Label(new GUIContent("Thanks to Doxygen©!"), tStyleBold);
             GUILayout.Label(new GUIContent("Copyright 1997-2018 by Dimitri van Heesch."), tStyleBold);
-            //GUILayout.BeginHorizontal();
-            //GUILayout.FlexibleSpace();
             if (GUILayout.Button(K_TEXTL_DOXYGEN))
             {
                 Application.OpenURL(K_URL_DOXYGEN);
             }
-            //GUILayout.FlexibleSpace();
-            //GUILayout.EndHorizontal();
             GUILayout.Space(20.0F);
             //----------
-
-
+            // SCROLL ZONE END
+            //----------
             EditorGUILayout.EndScrollView();
             //----------
-            //SCROLL ZONE END
+            // Check Action
             //----------
-
             if (EditorGUI.EndChangeCheck())
             {
                 SavePreferences();
