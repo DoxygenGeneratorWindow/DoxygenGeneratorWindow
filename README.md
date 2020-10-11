@@ -24,6 +24,7 @@ Doxygen© Generator Window add possibility to generate Header documentation fold
 ```shell
 cd <your_project>
 ```
+- if necessary create an empty file **.gitmodules**
 - checkout submodule NetWorkedData
 
 ```shell
